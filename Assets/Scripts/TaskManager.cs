@@ -35,6 +35,8 @@ public class TaskManager : MonoBehaviour
     private Task taskPlaying;
     public Task TaskPlaying { get => taskPlaying; set => taskPlaying = value; }
 
+    public AudioSource taskAlarm;
+
     private void Start()
     {
         TaskPlaying = null;

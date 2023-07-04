@@ -9,6 +9,8 @@ public class Task : MonoBehaviour
 {
     private string taskName;
     private int taskGoal;
+    public string TaskName { get => taskName; set => taskName = value; }
+    public int TaskGoal { get => taskGoal; set => taskGoal = value; }
 
     public Transform progressObject;
     public GameObject playButton;
@@ -23,11 +25,14 @@ public class Task : MonoBehaviour
     private float goalTextInitLocalPosY;
     private float progressObjInitHeight;
 
-    enum State { PAUSED, PLAYING, FINISHED };
+    enum State { PAUSED, PLAYING };
     State state;
+
+    bool finished;
 
     private void Awake()
     {
+        finished = false;
         state = State.PAUSED;
         slider.value = 0;
         goalTextInitLocalPosY = goalText.transform.localPosition.y;
@@ -44,22 +49,18 @@ public class Task : MonoBehaviour
     {
         if (state == State.PLAYING)
         {
-            taskTime += Time.deltaTime;
+            taskTime += Time.deltaTime * 50;
             if (slider.value < slider.maxValue)
             {
                 slider.value = taskTime / (taskGoal * 60);
             }
             currentTimeText.SetText(TimeSpan.FromSeconds(taskTime).ToString("h':'mm':'ss"));
-            //if (slider.value == 1)
-            //{
-            //    Pause();
-            //    state = State.FINISHED;
-            //}
+            if (slider.value == 1 && !finished)
+            {
+                Finish();
+            }
         }
     }
-
-    public string TaskName { get => taskName; set => taskName = value; }
-    public int TaskGoal { get => taskGoal; set => taskGoal = value; }
 
     public void AdjustMax(int newMax)
     {
@@ -73,7 +74,7 @@ public class Task : MonoBehaviour
 
     public void PlayPause()
     {
-        if(state != State.FINISHED && !PomodoroManager.instance.IsAlarmActive())
+        if(!PomodoroManager.instance.IsAlarmActive())
         {
             foreach(Transform child in transform.parent)
             {
@@ -111,10 +112,24 @@ public class Task : MonoBehaviour
         state = State.PAUSED;
         playButton.transform.Find("Image").GetComponent<Image>().sprite = TaskManager.Instance.playIcon;
         TaskManager.Instance.TaskPlaying = null;
+        if (finished && TaskManager.Instance.taskAlarm.isPlaying)
+        {
+            TaskManager.Instance.taskAlarm.Pause();
+        }
+    }
+
+    void Finish()
+    {
+        if (!finished)
+        {
+            finished = true;
+            TaskManager.Instance.taskAlarm.Play();
+        }
     }
 
     public void Delete()
     {
+        PauseAndResetPomodoro();
         TaskManager.Instance.DoAfterTaskDelete();
         Destroy(gameObject);
     }
