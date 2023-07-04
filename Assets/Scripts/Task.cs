@@ -49,7 +49,7 @@ public class Task : MonoBehaviour
     {
         if (state == State.PLAYING)
         {
-            taskTime += Time.deltaTime * 50;
+            taskTime += Time.deltaTime;
             if (slider.value < slider.maxValue)
             {
                 slider.value = taskTime / (taskGoal * 60);
