@@ -15,6 +15,7 @@ public class Task : MonoBehaviour
 
     public TextMeshProUGUI taskNameText;
     public TextMeshProUGUI goalText;
+    public TextMeshProUGUI currentTimeText;
 
     public Slider slider;
 
@@ -34,7 +35,7 @@ public class Task : MonoBehaviour
 
     private void Start()
     {
-        goalText.SetText(TimeSpan.FromMinutes(taskGoal).ToString("hh':'mm"));
+        goalText.SetText(TimeSpan.FromMinutes(taskGoal).ToString("h':'mm"));
         taskNameText.SetText(taskName);
     }
 
@@ -43,6 +44,7 @@ public class Task : MonoBehaviour
         if (state == State.PLAYING)
         {
             slider.value += Time.deltaTime / (taskGoal * 60);
+            currentTimeText.SetText(TimeSpan.FromMinutes(slider.value * taskGoal).ToString("h':'mm':'ss"));
             if (slider.value == 1)
             {
                 Pause();

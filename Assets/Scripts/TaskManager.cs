@@ -34,7 +34,7 @@ public class TaskManager : MonoBehaviour
 
     public void AddTask()
     {
-        if (grid.transform.childCount < 4)
+        if (grid.transform.childCount < 4 && taskGoalSlider.value > 0 && taskNameText.text.Length > 0)
         {
             GameObject task = Instantiate(taskPrefab);
             task.transform.SetParent(grid.transform);
@@ -82,6 +82,6 @@ public class TaskManager : MonoBehaviour
 
     public void UpdateTaskGoalInput()
     {
-        taskGoalInputText.SetText(TimeSpan.FromMinutes((int)taskGoalSlider.value * 5).ToString("hh':'mm"));
+        taskGoalInputText.SetText(TimeSpan.FromMinutes((int)taskGoalSlider.value * 5).ToString("h':'mm"));
     }
 }
