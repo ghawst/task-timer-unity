@@ -18,6 +18,7 @@ public class Task : MonoBehaviour
     public TextMeshProUGUI currentTimeText;
 
     public Slider slider;
+    private float taskTime;
 
     private float goalTextInitLocalPosY;
     private float progressObjInitHeight;
@@ -43,13 +44,17 @@ public class Task : MonoBehaviour
     {
         if (state == State.PLAYING)
         {
-            slider.value += Time.deltaTime / (taskGoal * 60);
-            currentTimeText.SetText(TimeSpan.FromMinutes(slider.value * taskGoal).ToString("h':'mm':'ss"));
-            if (slider.value == 1)
+            taskTime += Time.deltaTime;
+            if (slider.value < slider.maxValue)
             {
-                Pause();
-                state = State.FINISHED;
+                slider.value = taskTime / (taskGoal * 60);
             }
+            currentTimeText.SetText(TimeSpan.FromSeconds(taskTime).ToString("h':'mm':'ss"));
+            //if (slider.value == 1)
+            //{
+            //    Pause();
+            //    state = State.FINISHED;
+            //}
         }
     }
 
@@ -74,7 +79,7 @@ public class Task : MonoBehaviour
             {
                 if (child.GetComponent<Task>().state == State.PLAYING && child != transform)
                 {
-                    child.GetComponent<Task>().Pause();
+                    child.GetComponent<Task>().PauseAndResetPomodoro();
                 }
             }
             if (state == State.PAUSED)
@@ -83,7 +88,7 @@ public class Task : MonoBehaviour
             }
             else if (state == State.PLAYING)
             {
-                Pause();
+                PauseAndResetPomodoro();
             }
         }
     }
@@ -92,12 +97,20 @@ public class Task : MonoBehaviour
     {
         state = State.PLAYING;
         playButton.transform.Find("Image").GetComponent<Image>().sprite = TaskManager.Instance.pauseIcon;
+        TaskManager.Instance.TaskPlaying = this;
+    }
+
+    public void PauseAndResetPomodoro()
+    {
+        Pause();
+        PomodoroManager.instance.ResetPomodoro();
     }
 
     public void Pause()
     {
         state = State.PAUSED;
         playButton.transform.Find("Image").GetComponent<Image>().sprite = TaskManager.Instance.playIcon;
+        TaskManager.Instance.TaskPlaying = null;
     }
 
     public void Delete()

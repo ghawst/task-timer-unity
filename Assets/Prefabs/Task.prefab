@@ -347,6 +347,7 @@ MonoBehaviour:
   goalText: {fileID: 7569463913005169761}
   currentTimeText: {fileID: 1645055741087668063}
   slider: {fileID: 5534320664074012547}
+  taskTime: 0
 --- !u!1 &5534320663540810394
 GameObject:
   m_ObjectHideFlags: 0

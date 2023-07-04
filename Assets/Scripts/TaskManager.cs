@@ -32,6 +32,14 @@ public class TaskManager : MonoBehaviour
     public Sprite playIcon;
     public Sprite pauseIcon;
 
+    private Task taskPlaying;
+    public Task TaskPlaying { get => taskPlaying; set => taskPlaying = value; }
+
+    private void Start()
+    {
+        TaskPlaying = null;
+    }
+
     public void AddTask()
     {
         if (grid.transform.childCount < 4 && taskGoalSlider.value > 0 && taskNameText.text.Length > 0)
