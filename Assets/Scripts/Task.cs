@@ -14,6 +14,7 @@ public class Task : MonoBehaviour
 
     public Transform progressObject;
     public GameObject playButton;
+    public GameObject alarmButton;
 
     public TextMeshProUGUI taskNameText;
     public TextMeshProUGUI goalText;
@@ -32,6 +33,7 @@ public class Task : MonoBehaviour
 
     private void Awake()
     {
+        alarmButton.SetActive(false);
         finished = false;
         state = State.PAUSED;
         slider.value = 0;
@@ -114,8 +116,14 @@ public class Task : MonoBehaviour
         TaskManager.Instance.TaskPlaying = null;
         if (finished && TaskManager.Instance.taskAlarm.isPlaying)
         {
-            TaskManager.Instance.taskAlarm.Pause();
+            StopAlarm();
         }
+    }
+
+    public void StopAlarm()
+    {
+        alarmButton.SetActive(false);
+        TaskManager.Instance.taskAlarm.Pause();
     }
 
     void Finish()
@@ -123,6 +131,8 @@ public class Task : MonoBehaviour
         if (!finished)
         {
             finished = true;
+            alarmButton.SetActive(true);
+            TaskManager.Instance.taskAlarm.time = 0;
             TaskManager.Instance.taskAlarm.Play();
         }
     }

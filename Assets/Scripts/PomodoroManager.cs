@@ -61,12 +61,14 @@ public class PomodoroManager : MonoBehaviour
         {
             pomodoroTimerText.SetText(TimeSpan.FromSeconds(25 * 60).ToString("h':'mm':'ss"));
             state = State.WORKINGALARM;
+            workingAlarm.time = 0;
             workingAlarm.Play();
         }
         else if (state == State.BREAK)
         {
             breakTimerText.SetText(TimeSpan.FromSeconds(5 * 60).ToString("h':'mm':'ss"));
             state = State.BREAKALARM;
+            breakAlarm.time = 0;
             breakAlarm.Play();
         }
     }
