@@ -36,7 +36,7 @@ public class PomodoroManager : MonoBehaviour
     {
         if (pomodoroToggle.isOn && TaskManager.Instance.TaskPlaying != null && state == State.WORKING)
         {
-            pomodoroTime += Time.deltaTime * 250;
+            pomodoroTime += Time.deltaTime;
             pomodoroTimerText.SetText(TimeSpan.FromSeconds(pomodoroTime).ToString("h':'mm':'ss"));
             if (pomodoroTime / 60 >= 25)
             {
@@ -45,7 +45,7 @@ public class PomodoroManager : MonoBehaviour
         }
         if (state == State.BREAK)
         {
-            breakTime += Time.deltaTime * 250;
+            breakTime += Time.deltaTime;
             breakTimerText.SetText(TimeSpan.FromSeconds(breakTime).ToString("h':'mm':'ss"));
             if (breakTime / 60 >= 5)
             {
