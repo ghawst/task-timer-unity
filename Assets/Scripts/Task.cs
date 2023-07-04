@@ -73,7 +73,7 @@ public class Task : MonoBehaviour
 
     public void PlayPause()
     {
-        if(state != State.FINISHED)
+        if(state != State.FINISHED && !PomodoroManager.instance.IsAlarmActive())
         {
             foreach(Transform child in transform.parent)
             {

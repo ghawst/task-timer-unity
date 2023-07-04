@@ -101,4 +101,9 @@ public class PomodoroManager : MonoBehaviour
         breakTimerText.SetText(TimeSpan.FromSeconds(breakTime).ToString("h':'mm':'ss"));
         state = State.WORKING;
     }
+
+    public bool IsAlarmActive()
+    {
+        return state == State.BREAKALARM || state == State.WORKINGALARM;
+    }
 }
