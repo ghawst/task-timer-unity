@@ -7,6 +7,7 @@ public class HistoryManager : MonoBehaviour
     public static HistoryManager Instance { get; private set; }
 
     public GameObject historyScreen;
+    public GameObject deleteVerifyBox;
 
     public GameObject historyContent;
     public GameObject progressContent;
@@ -15,6 +16,8 @@ public class HistoryManager : MonoBehaviour
     public GameObject progressItemPrefab;
 
     Dictionary<string, float> totalTasks;
+
+    string taskToDelete;
 
     private void Awake()
     {
@@ -26,6 +29,10 @@ public class HistoryManager : MonoBehaviour
         {
             Instance = this;
         }
+    }
+
+    public void Start()
+    {
         foreach (Transform child in historyContent.transform)
         {
             Destroy(child.gameObject);
@@ -34,26 +41,26 @@ public class HistoryManager : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-    }
-
-    public void Start()
-    {
         historyScreen.SetActive(false);
+        DontDelete();
         totalTasks = new Dictionary<string, float>();
-        List<DayData> dayDataList = SaveSystem.ReadJson();
-        foreach(DayData dayData in dayDataList)
+        if (SaveSystem.CheckIfSaveExists())
         {
-            GameObject historyItem = Instantiate(historyItemPrefab);
-            historyItem.transform.SetParent(historyContent.transform);
-            historyItem.transform.localScale = Vector3.one;
-            historyItem.GetComponent<HistoryItem>().Initialize(dayData);
-        }
-        foreach(KeyValuePair<string, float> task in totalTasks)
-        {
-            GameObject progressItem = Instantiate(progressItemPrefab);
-            progressItem.transform.SetParent(progressContent.transform);
-            progressItem.transform.localScale = Vector3.one;
-            progressItem.GetComponent<ProgressItem>().Initialize(task.Key, task.Value);
+            List<DayData> dayDataList = SaveSystem.ReadJson();
+            foreach (DayData dayData in dayDataList)
+            {
+                GameObject historyItem = Instantiate(historyItemPrefab);
+                historyItem.transform.SetParent(historyContent.transform);
+                historyItem.transform.localScale = Vector3.one;
+                historyItem.GetComponent<HistoryItem>().Initialize(dayData);
+            }
+            foreach (KeyValuePair<string, float> task in totalTasks)
+            {
+                GameObject progressItem = Instantiate(progressItemPrefab);
+                progressItem.transform.SetParent(progressContent.transform);
+                progressItem.transform.localScale = Vector3.one;
+                progressItem.GetComponent<ProgressItem>().Initialize(task.Key, task.Value);
+            }
         }
     }
 
@@ -76,6 +83,27 @@ public class HistoryManager : MonoBehaviour
         else
         {
             totalTasks.Add(taskData.name, taskData.progress);
+        }
+    }
+
+    public void DontDelete()
+    {
+        deleteVerifyBox.SetActive(false);
+        taskToDelete = null;
+    }
+
+    public void TrashButton(string taskName)
+    {
+        deleteVerifyBox.SetActive(true);
+        taskToDelete = taskName;
+    }
+
+    public void DeleteTask()
+    {
+        if(taskToDelete != null)
+        {
+            SaveSystem.DeleteTask(taskToDelete);
+            Start();
         }
     }
 }

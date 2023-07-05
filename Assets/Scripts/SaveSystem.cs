@@ -13,16 +13,26 @@ public class SaveSystem {
     public static void Save()
     {
         DayData data = new DayData(DateTime.Today, GetCurrentTasksData());
-        if(File.Exists(path) && ReadJson().Count > 0 && ReadJson().Last().date == data.date)
+        if(CheckIfSaveExists() && ReadJson().Count > 0 && ReadJson().Last().date == data.date)
         {
             List<string> lines = File.ReadAllLines(path).ToList();
             File.WriteAllLines(path, lines.GetRange(0, lines.Count - 1).ToArray());
         }
         if(data.tasks.Count > 0)
         {
-            string json = JsonConvert.SerializeObject(data);
-            File.AppendAllText(path, json + "," + Environment.NewLine);
+            WriteToJson(data);
         }
+    }
+
+    public static bool CheckIfSaveExists()
+    {
+        return File.Exists(path);
+    }
+
+    static void WriteToJson(DayData data)
+    {
+        string json = JsonConvert.SerializeObject(data);
+        File.AppendAllText(path, json + "," + Environment.NewLine);
     }
 
     public static void Load()
@@ -58,5 +68,25 @@ public class SaveSystem {
             tasks.Add(new TaskData(name, goal, progress));
         }
         return tasks;
+    }
+
+    public static void DeleteTask(string taskName)
+    {
+        List<DayData> dayDatas = ReadJson();
+        File.WriteAllText(path, "");
+        foreach(DayData dayData in dayDatas.ToList())
+        {
+            foreach(TaskData taskItem in dayData.tasks.ToList())
+            {
+                if(taskItem.name == taskName)
+                {
+                    dayData.tasks.Remove(taskItem);
+                }
+            }
+            if(dayData.tasks.Count > 0)
+            {
+                WriteToJson(dayData);
+            }
+        }
     }
 }

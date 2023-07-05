@@ -21,7 +21,7 @@ public class HistoryItem : MonoBehaviour
 
     public void Initialize(DayData dayData)
     {
-        dateText.SetText(dayData.date.ToString("dd'-'MM'-'yyyy"));
+        dateText.SetText(dayData.date.ToString("yyyy MMMM dd ddd"));
         foreach(TaskData taskData in dayData.tasks)
         {
             GameObject taskItem = Instantiate(taskItemPrefab);
