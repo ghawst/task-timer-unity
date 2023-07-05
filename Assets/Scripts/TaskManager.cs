@@ -42,6 +42,18 @@ public class TaskManager : MonoBehaviour
         TaskPlaying = null;
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyUp(KeyCode.S))
+        {
+            SaveSystem.Save();
+        }
+        if (Input.GetKeyUp(KeyCode.L))
+        {
+            SaveSystem.Load();
+        }
+    }
+
     public void AddTask()
     {
         if (grid.transform.childCount < 4 && taskGoalSlider.value > 0 && taskNameText.text.Length > 0)

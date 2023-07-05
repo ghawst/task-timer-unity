@@ -11,6 +11,7 @@ public class Task : MonoBehaviour
     private int taskGoal;
     public string TaskName { get => taskName; set => taskName = value; }
     public int TaskGoal { get => taskGoal; set => taskGoal = value; }
+    public float TaskTime { get => taskTime; set => taskTime = value; }
 
     public Transform progressObject;
     public GameObject playButton;
@@ -51,12 +52,12 @@ public class Task : MonoBehaviour
     {
         if (state == State.PLAYING)
         {
-            taskTime += Time.deltaTime;
+            TaskTime += Time.deltaTime;
             if (slider.value < slider.maxValue)
             {
-                slider.value = taskTime / (taskGoal * 60);
+                slider.value = TaskTime / (taskGoal * 60);
             }
-            currentTimeText.SetText(TimeSpan.FromSeconds(taskTime).ToString("h':'mm':'ss"));
+            currentTimeText.SetText(TimeSpan.FromSeconds(TaskTime).ToString("h':'mm':'ss"));
             if (slider.value == 1 && !finished)
             {
                 Finish();
