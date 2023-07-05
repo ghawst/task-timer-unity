@@ -28,6 +28,8 @@ public class HistoryItem : MonoBehaviour
             taskItem.transform.SetParent(taskContent.transform);
             taskItem.transform.localScale = Vector3.one;
             taskItem.GetComponent<TaskItem>().Initialize(taskData);
+
+            HistoryManager.Instance.AddTaskToTotal(taskData);
         }
     }
 }

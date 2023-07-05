@@ -1,18 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class ProgressItem : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public TextMeshProUGUI taskNameText;
+    public TextMeshProUGUI taskProgressText;
 
-    // Update is called once per frame
-    void Update()
+    public void Initialize(string taskName, float taskProgress)
     {
-        
+        taskNameText.SetText(taskName);
+        taskProgressText.SetText(TimeSpan.FromSeconds(taskProgress).ToString("h':'mm"));
     }
 }
