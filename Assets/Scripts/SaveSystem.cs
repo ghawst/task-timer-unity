@@ -18,8 +18,11 @@ public class SaveSystem {
             List<string> lines = File.ReadAllLines(path).ToList();
             File.WriteAllLines(path, lines.GetRange(0, lines.Count - 1).ToArray());
         }
-        string json = JsonConvert.SerializeObject(data);
-        File.AppendAllText(path, json + "," + Environment.NewLine);
+        if(data.tasks.Count > 0)
+        {
+            string json = JsonConvert.SerializeObject(data);
+            File.AppendAllText(path, json + "," + Environment.NewLine);
+        }
     }
 
     public static void Load()

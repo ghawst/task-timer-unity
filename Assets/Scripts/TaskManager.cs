@@ -117,9 +117,6 @@ public class TaskManager : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        if(grid.transform.childCount > 0)
-        {
-            SaveSystem.Save();
-        }
+        SaveSystem.Save();
     }
 }
