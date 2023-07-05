@@ -53,15 +53,20 @@ public class Task : MonoBehaviour
         if (state == State.PLAYING)
         {
             TaskTime += Time.deltaTime;
-            if (slider.value < slider.maxValue)
-            {
-                slider.value = TaskTime / (taskGoal * 60);
-            }
-            currentTimeText.SetText(TimeSpan.FromSeconds(TaskTime).ToString("h':'mm':'ss"));
-            if (slider.value == 1 && !finished)
-            {
-                Finish();
-            }
+            UpdateTaskTimeDisplay();
+        }
+    }
+
+    public void UpdateTaskTimeDisplay()
+    {
+        if (slider.value < slider.maxValue)
+        {
+            slider.value = TaskTime / (taskGoal * 60);
+        }
+        currentTimeText.SetText(TimeSpan.FromSeconds(TaskTime).ToString("h':'mm':'ss"));
+        if (slider.value == 1 && !finished)
+        {
+            Finish();
         }
     }
 

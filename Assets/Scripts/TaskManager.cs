@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -40,6 +41,7 @@ public class TaskManager : MonoBehaviour
     private void Start()
     {
         TaskPlaying = null;
+        SaveSystem.Load();
     }
 
     private void Update()
@@ -54,18 +56,24 @@ public class TaskManager : MonoBehaviour
         }
     }
 
-    public void AddTask()
+    public void AddTaskFromForm()
     {
         if (grid.transform.childCount < 4 && taskGoalSlider.value > 0 && taskNameText.text.Length > 0)
         {
-            GameObject task = Instantiate(taskPrefab);
-            task.transform.SetParent(grid.transform);
-            task.transform.localScale = Vector3.one;
-            task.GetComponent<Task>().TaskName = taskNameText.text;
-            int taskGoal = (int)taskGoalSlider.value * 5;
-            task.GetComponent<Task>().TaskGoal = taskGoal;
-            AdjustTasksMaxGoal();
+            AddTask(taskNameText.text, (int)taskGoalSlider.value * 5, 0);
         }
+    }
+
+    public void AddTask(string name, int goal, float progress)
+    {
+        GameObject task = Instantiate(taskPrefab);
+        task.transform.SetParent(grid.transform);
+        task.transform.localScale = Vector3.one;
+        task.GetComponent<Task>().TaskName = name;
+        task.GetComponent<Task>().TaskGoal = goal;
+        task.GetComponent<Task>().TaskTime = progress;
+        task.GetComponent<Task>().UpdateTaskTimeDisplay();
+        AdjustTasksMaxGoal();
     }
 
     public void AdjustTasksMaxGoal()
@@ -105,5 +113,10 @@ public class TaskManager : MonoBehaviour
     public void UpdateTaskGoalInput()
     {
         taskGoalInputText.SetText(TimeSpan.FromMinutes((int)taskGoalSlider.value * 5).ToString("h':'mm"));
+    }
+
+    private void OnApplicationQuit()
+    {
+        SaveSystem.Save();
     }
 }

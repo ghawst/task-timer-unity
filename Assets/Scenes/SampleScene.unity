@@ -985,7 +985,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1315139196}
         m_TargetAssemblyTypeName: TaskManager, Assembly-CSharp
-        m_MethodName: AddTask
+        m_MethodName: AddTaskFromForm
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
