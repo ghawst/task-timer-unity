@@ -46,14 +46,14 @@ public class TaskManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyUp(KeyCode.S))
-        {
-            SaveSystem.Save();
-        }
-        if (Input.GetKeyUp(KeyCode.L))
-        {
-            SaveSystem.Load();
-        }
+        //if (Input.GetKeyUp(KeyCode.S))
+        //{
+        //    SaveSystem.Save();
+        //}
+        //if (Input.GetKeyUp(KeyCode.L))
+        //{
+        //    SaveSystem.Load();
+        //}
     }
 
     public void AddTaskFromForm()
