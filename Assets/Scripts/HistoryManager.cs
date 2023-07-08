@@ -47,12 +47,12 @@ public class HistoryManager : MonoBehaviour
         if (SaveSystem.CheckIfSaveExists())
         {
             List<DayData> dayDataList = SaveSystem.ReadJson();
-            foreach (DayData dayData in dayDataList)
+            for (int i = dayDataList.Count - 1; i >= 0; i--)
             {
                 GameObject historyItem = Instantiate(historyItemPrefab);
                 historyItem.transform.SetParent(historyContent.transform);
                 historyItem.transform.localScale = Vector3.one;
-                historyItem.GetComponent<HistoryItem>().Initialize(dayData);
+                historyItem.GetComponent<HistoryItem>().Initialize(dayDataList[i]);
             }
             foreach (KeyValuePair<string, float> task in totalTasks)
             {
