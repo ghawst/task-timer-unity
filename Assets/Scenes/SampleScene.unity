@@ -3311,6 +3311,7 @@ MonoBehaviour:
   playIcon: {fileID: 21300000, guid: ec2fab8f9cfaca04290e45bd0641e75a, type: 3}
   pauseIcon: {fileID: 21300000, guid: 78ac589ab05507944807658f02a1d319, type: 3}
   taskAlarm: {fileID: 1802348587}
+  saveTime: 5
 --- !u!4 &1315139197
 Transform:
   m_ObjectHideFlags: 0

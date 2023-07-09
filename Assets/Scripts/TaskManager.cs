@@ -38,6 +38,9 @@ public class TaskManager : MonoBehaviour
 
     public AudioSource taskAlarm;
 
+    float saveTimer;
+    public float saveTime;
+
     private void Start()
     {
         TaskPlaying = null;
@@ -54,6 +57,15 @@ public class TaskManager : MonoBehaviour
         //{
         //    SaveSystem.Load();
         //}
+        if(saveTimer < saveTime * 60)
+        {
+            saveTimer += Time.deltaTime;
+        }
+        else
+        {
+            saveTimer = 0;
+            SaveSystem.Save();
+        }
     }
 
     public void AddTaskFromForm()
